@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jenna's Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500;1,9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #EEE6D3;
+    --paper: #58694F;
+    --ink-panel: #3A4833;
+    --rose: #D9BE8C;
+    --rose-deep: #E6CB98;
+    --taupe: #DCE2D0;
+    --peach: #46563E;
+    --peach-line: #75876B;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #EEE6D3;
+      --paper: #58694F;
+      --ink-panel: #3A4833;
+      --rose: #D9BE8C;
+      --rose-deep: #E6CB98;
+      --taupe: #DCE2D0;
+      --peach: #46563E;
+      --peach-line: #75876B;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #EEE6D3;
+    --paper: #58694F;
+    --ink-panel: #3A4833;
+    --rose: #D9BE8C;
+    --rose-deep: #E6CB98;
+    --taupe: #DCE2D0;
+    --peach: #46563E;
+    --peach-line: #75876B;
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-smooth: always;
+  }
+  a { color: var(--rose-deep); }
+
+  .layout {
+    display: block;
+    min-height: 100vh;
+  }
+
+  /* Page content */
+  .right {
+    padding: 0 clamp(28px, 6vw, 88px) 80px;
+  }
+
+  /* Posts */
+  .posts {
+    display: flex;
+    flex-direction: column;
+    max-width: 780px;
+  }
+  .post {
+    cursor: pointer;
+    padding: 40px 0;
+    border-bottom: 1px solid var(--peach-line);
+    text-decoration: none;
+    color: inherit;
+  }
+  .post h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(2rem, 4vw, 2.9rem);
+    margin: 0 0 14px;
+    line-height: 1.1;
+  }
+  .post p.excerpt {
+    margin: 0;
+    color: var(--taupe);
+    font-size: 18px;
+    max-width: 56ch;
+  }
+  .post:hover h2, .post:focus-visible h2 { color: #CFC2A2; }
+  .post:focus-visible { outline: 2px solid #CFC2A2; outline-offset: 8px; }
+
+  footer {
+    padding: 40px 0 60px;
+    border-top: 1px solid var(--peach-line);
+    font-size: 13.5px;
+    color: var(--taupe);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .posts { animation: rise 0.5s ease both; }
+    @keyframes rise { from { opacity: 0; } to { opacity: 1; } }
+  }
+
+  /* Poem view */
+  .right { display: none; }
+  .right.active { display: block; }
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 32px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--taupe);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+  }
+  .back:hover { color: #CFC2A2; }
+
+  .poem-meta { padding-bottom: 8px; }
+  h1.poem-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    line-height: 1.05;
+    margin: 0 0 12px;
+    letter-spacing: -0.01em;
+    max-width: 680px;
+  }
+  .poem-date {
+    font-size: 14px;
+    color: var(--taupe);
+    margin: 0;
+  }
+  .poem-body {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+    line-height: 1.85;
+    color: var(--ink);
+    padding: 40px 0 60px;
+    white-space: pre-line;
+    max-width: 640px;
+  }
+  .poem-body p { margin: 0 0 26px; }
+  /* Essay formatting (headings, block quotes, notes, works cited) */
+  .essay-byline { font-family: 'Fraunces', serif; font-style: italic; font-size: 16px; line-height: 1.5; }
+  .essay h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: clamp(1.3rem, 2.2vw, 1.55rem);
+    line-height: 1.25;
+    text-align: center;
+    margin: 56px 0 28px;
+  }
+  .essay blockquote {
+    margin: 0 0 26px;
+    padding: 0 clamp(20px, 6vw, 56px);
+    font-size: 0.92em;
+    line-height: 1.75;
+  }
+  .essay sup { font-size: 0.65em; line-height: 0; font-family: 'Inter', sans-serif; font-weight: 600; color: var(--rose-deep); }
+  .essay .notes { margin: 0 0 26px; padding-left: 1.4em; font-size: 0.88em; line-height: 1.7; color: var(--taupe); }
+  .essay .notes li { margin-bottom: 12px; padding-left: 4px; }
+  .essay p.cite {
+    font-size: 0.9em;
+    line-height: 1.7;
+    margin: 0 0 16px;
+    padding-left: 2.2em;
+    text-indent: -2.2em;
+    overflow-wrap: anywhere;
+  }
+  .right:not(#view-list) { padding-top: 56px; }
+
+  /* Category headers on the main list */
+  .group { margin-bottom: 0; padding-bottom: 64px; }
+  /* Every other section: full-width light cream band with dark text */
+  .group:nth-of-type(even) {
+    --ink: #1B4A2B;
+    --taupe: #2A5C3A;
+    --rose-deep: #1B4A2B;
+    --peach: #E7DDC3;
+    --peach-line: #CDBF9F;
+    background: #F4ECD8;
+    color: var(--ink);
+    margin: 0 calc(-1 * clamp(28px, 6vw, 88px));
+    padding: 0 clamp(28px, 6vw, 88px) 72px;
+  }
+  h2.group-head {
+    margin: 0 calc(-1 * clamp(28px, 6vw, 88px)) 40px;
+    padding: 22px clamp(28px, 6vw, 88px);
+    background: var(--peach);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 1.3;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .posts { max-width: none; }
+  .group .post { display: block; max-width: 780px; }
+  .group .post:first-of-type { padding-top: 0; }
+  .group .post:last-child { border-bottom: none; padding-bottom: 0; }
+  .group .post h2 { text-transform: uppercase; letter-spacing: 0.02em; }
+
+  /* Split layout: section title on the left half, content on the right half */
+  .group,
+  .group:nth-of-type(even) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 0 calc(-1 * clamp(28px, 6vw, 88px));
+    padding: 0;
+  }
+  .group > h2.group-head {
+    grid-column: 1;
+    grid-row: 1 / span 20;
+    margin: 0;
+    padding: 72px clamp(28px, 6vw, 88px);
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: clamp(2.4rem, 6vw, 5.2rem);
+    line-height: 1;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .group > :not(.group-head) {
+    grid-column: 2;
+    margin-left: clamp(28px, 5vw, 72px);
+    margin-right: clamp(28px, 6vw, 88px);
+  }
+  .group > .group-head + * { margin-top: 72px; }
+  .group > :last-child { margin-bottom: 72px; }
+  @media (max-width: 820px) {
+    .group,
+    .group:nth-of-type(even) { grid-template-columns: 1fr; }
+    .group > h2.group-head { grid-row: auto; padding: 48px clamp(28px, 6vw, 88px); }
+    .group > :not(.group-head) {
+      grid-column: 1;
+      margin-left: clamp(28px, 6vw, 88px);
+    }
+    .group > .group-head + * { margin-top: 40px; }
+    .group > :last-child { margin-bottom: 48px; }
+  }
+
+  /* All cream text matches the header's cream */
+  html:root:not(.x) { --ink: #F4ECD8; --taupe: #F4ECD8; }
+
+  /* Name header */
+  .intro {
+    margin: 0 calc(-1 * clamp(28px, 6vw, 88px));
+    padding: 140px clamp(28px, 6vw, 88px) 130px;
+    --ink: #1B4A2B;
+    --taupe: #2A5C3A;
+    background: #F4ECD8;
+  }
+  h1.name {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: clamp(3.6rem, 11.5vw, 9.5rem);
+    line-height: 0.96;
+    margin: 0 0 22px;
+    letter-spacing: 0;
+    text-rendering: geometricPrecision;
+    color: var(--ink);
+  }
+  a.tagline {
+    display: inline-block;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: normal;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+  }
+  a.tagline:hover, a.tagline:focus-visible { border-bottom-color: var(--ink); }
+
+  .post p.category {
+    margin: -4px 0 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  /* Header contact row */
+  .intro .contact { display: flex; flex-wrap: wrap; gap: 4px 40px; }
+
+  /* Header text lines */
+  .intro p.tagline {
+    margin: 0 0 16px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+  .intro a.linkedin {
+    display: inline-block;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: #3F7351;
+    text-decoration: none;
+    text-underline-offset: 4px;
+  }
+  .intro a.linkedin:hover, .intro a.linkedin:focus-visible { text-decoration-thickness: 2px; }
+
+  /* Project links */
+  .edu-item h3 a { color: inherit; text-decoration: none; }
+  .edu-item h3 a:hover, .edu-item h3 a:focus-visible { text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 2px; }
+  .edu-item p.project-link { margin: 0; font-family: 'Fraunces', serif; font-style: normal; font-size: 21px; line-height: 1.4; }
+  .edu-item p.project-link + p.project-link { margin-top: 8px; }
+  .edu-item p.project-link a { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
+
+  .intro a.linkedin.plain { text-decoration: none; }
+
+  /* Skills entries */
+  .skill-item {
+    max-width: 780px;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--peach-line);
+  }
+  .skill-item:first-of-type { padding-top: 0; }
+  .skill-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .skill-item h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(1.4rem, 2.6vw, 1.9rem);
+    line-height: 1.1;
+    margin: 0 0 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  .skill-item p { margin: 0; font-size: 18px; line-height: 1.6; color: var(--taupe); }
+
+  /* Education entries */
+  .edu-item {
+    max-width: 780px;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--peach-line);
+  }
+  .edu-item:first-of-type { padding-top: 0; }
+  .edu-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .edu-item h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(1.6rem, 3.2vw, 2.3rem);
+    line-height: 1.1;
+    margin: 0 0 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  .edu-item .edu-place { margin: 0 0 14px; color: var(--taupe); font-size: 15px; }
+  .edu-item .edu-detail { margin: 0 0 4px; font-family: 'Fraunces', serif; font-style: italic; font-size: 19px; }
+  .edu-item .edu-dates { margin: 0; color: var(--taupe); font-size: 15px; }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <div class="right active" id="view-list">
+    <header class="intro">
+      <h1 class="name">Jenna Overmeer</h1>
+      <p class="tagline">Writer | Technical Writing | Communication &amp; Social Media Marketing</p>
+      <div class="contact">
+        <a class="linkedin" href="https://www.linkedin.com/in/jenna-overmeer-593598295" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="linkedin plain" href="mailto:jenna.layne.over@gmail.com">jenna.layne.over@gmail.com</a>
+        <a class="linkedin plain" href="tel:+17074782714">(707) 478-2714</a>
+      </div>
+    </header>
+    <main class="posts">
+
+      <section class="group">
+        <h2 class="group-head">Sample Works</h2>
+
+        <div class="post" role="link" tabindex="0" data-view="canes">
+          <h2>Ode to Cane's</h2>
+          <p class="category">Poetry</p>
+          <p class="excerpt">Prose remembering a time you didn't think you'd miss.</p>
+        </div>
+
+        <div class="post" role="link" tabindex="0" data-view="poem">
+          <h2>All the Women Before You</h2>
+          <p class="category">Poetry</p>
+          <p class="excerpt">A poem in awe of the women we came from.</p>
+        </div>
+
+        <div class="post" role="link" tabindex="0" data-view="handmaid">
+          <h2>What We Allow to be Feminist: A Look at Privilege and Internalized Oppression in The Handmaid&rsquo;s Tale</h2>
+          <p class="category">Literary Research</p>
+          <p class="excerpt">An essay on privilege and internalized oppression in The Handmaid&rsquo;s Tale.</p>
+        </div>
+
+        <div class="post" role="link" tabindex="0" data-view="citylights">
+          <h2>City Lights</h2>
+          <p class="category">Journalism</p>
+          <p class="excerpt">A non-fiction research backed think piece diving into a historical bookstore I knew nothing of.</p>
+        </div>
+      </section>
+
+      <section class="group">
+        <h2 class="group-head">Education</h2>
+
+        <div class="edu-item">
+          <h3>University of Redlands</h3>
+          <p class="edu-place">Redlands, California</p>
+          <p class="edu-detail">Bachelor of Arts in English Literature and Creative Writing</p>
+          <p class="edu-dates">August 2021 &ndash; April 2025</p>
+        </div>
+
+        <div class="edu-item">
+          <h3>Yonsei University</h3>
+          <p class="edu-place">Seoul, South Korea</p>
+          <p class="edu-detail">The Council on International Education Exchange</p>
+          <p class="edu-dates">February 2023 &ndash; June 2023</p>
+        </div>
+
+        <div class="edu-item">
+          <h3>Chonnam National University</h3>
+          <p class="edu-place">Gwangju, South Korea</p>
+          <p class="edu-detail">International Summer Session</p>
+          <p class="edu-dates">July 2025</p>
+        </div>
+      </section>
+
+      <section class="group">
+        <h2 class="group-head">Skills</h2>
+
+        <div class="skill-item">
+          <h3>Technical Skills</h3>
+          <p>Creative writing, editing, proofreading, grammar, style, content creation, social media content, branding, marketing, adapting tone for different audiences, campaign coordination, quality assurance, cross-functional collaboration, attention to detail, deadline management, project management, multi-tasking</p>
+        </div>
+
+        <div class="skill-item">
+          <h3>Tools</h3>
+          <p>Google Suite, Slack, Salesforce, Canva, Microsoft Office Suite, Jira, Rippling, Instagram, TikTok, Edits</p>
+        </div>
+
+        <div class="skill-item">
+          <h3>Languages</h3>
+          <p>Spanish (Intermediate)<br>Korean (Intermediate)</p>
+        </div>
+      </section>
+
+      <section class="group">
+        <h2 class="group-head">Social Media Management</h2>
+
+        <div class="edu-item">
+          <h3>Armacost Library</h3>
+          <p class="project-link"><a href="https://www.instagram.com/p/DJ78HnapT-1/?img_index=1" target="_blank" rel="noopener">Book of the Month Post &#8599;</a></p>
+          <p class="project-link"><a href="https://www.instagram.com/p/DE3DLl1yGMR/?img_index=1" target="_blank" rel="noopener">Book of the Month Post &#8599;</a></p>
+          <p class="project-link"><a href="https://www.instagram.com/p/DBNG-2XyVhl/?img_index=1" target="_blank" rel="noopener">Book of the Month Post &#8599;</a></p>
+          <p class="project-link"><a href="https://www.instagram.com/p/CzrNl4qJXgN/?img_index=1" target="_blank" rel="noopener">Banned Book Week &#8599;</a></p>
+        </div>
+
+        <div class="edu-item">
+          <h3>Asian Student Association</h3>
+          <p class="project-link"><a href="https://www.instagram.com/p/DEnsfQMyt6_/" target="_blank" rel="noopener">Night Market &#8599;</a></p>
+          <p class="project-link"><a href="https://www.instagram.com/p/DFaz0IkSjBb/" target="_blank" rel="noopener">Lunar New Year &#8599;</a></p>
+        </div>
+
+        <div class="edu-item">
+          <h3>Sigma Tau Delta</h3>
+          <p class="project-link"><a href="https://www.instagram.com/p/DJ78HnapT-1/?img_index=1" target="_blank" rel="noopener">Introverts Book Club &#8599;</a></p>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      <span>Jenna&rsquo;s Portfolio, since 2026</span>
+      <span>made with care</span>
+    </footer>
+  </div>
+
+  <div class="right" id="view-poem">
+    <div class="poem-wrap">
+      <button class="back" type="button">&larr; back to all posts</button>
+
+      <div class="poem-body">When you want nothing more than to be in the arms
+of all the women before you.
+To feel your mother's heartbeat slow the blood rushing in your ears,
+or to crawl under your grandmother&rsquo;s sagging rolls 
+of soft skin and hide from the terrors 
+of what if.
+
+To hold the hands of the warriors who screamed 
+in your honor before they even knew you 
+were alive, and to hear them promise
+you were worth it. 
+
+When you want nothing more than to be in the arms of all the 
+women before you, I hope you see the flowers they planted 
+in the dry ground bloom at your feet,
+as you find peace in the arms
+of all the women you were,
+and hold your arms out
+to all of the women
+you will be.</div>
+    </div>
+
+    <footer>
+      <span>Jenna&rsquo;s Portfolio, since 2026</span>
+      <span>made with care</span>
+    </footer>
+  </div>
+
+  <div class="right" id="view-canes">
+    <div class="poem-wrap">
+      <button class="back" type="button">&larr; back to all posts</button>
+
+      <div class="poem-body" style="white-space: normal; max-width: 680px;">
+        <p>Do you have a place that transports you? A song? Or maybe a smell? Maybe it's your mom's shampoo, your childhood best friend's laundry detergent or your older brother's Old Spice deodorant. You get one whiff and suddenly you're under his armpit again getting wrestled to the ground for no reason. But maybe now, as you smell this Old Spice scent off of a random man in Target, you smile at the traumatizing memory, because now your brother's gone to college on the other side of the world and you have to admit the disgusting truth that maybe you do miss him.</p>
+
+        <p>For me it's not a smell, but it's the loud and decked-out dining room of a Cane's. Raising Cane's. The one named after the dog. I think he&mdash;Todd Graves, obviously&mdash;is now on the third Cane.</p>
+
+        <p>To be honest, though, I didn't know what Cane's was until I was in college, far away from home. My boyfriend at the time asked if I wanted to go. He was appalled when I asked what it was. He insisted we go. I drove us there, paid for our chicken, and had the best Arnold Palmer I think this earth has to offer.</p>
+
+        <p>I proceeded to do this again and again at differing horrific times of night because said boyfriend was high, needed chicken, and Cane's didn't close until 3. Said boyfriend and I broke up after not too long together, but I continued to go to Cane's.</p>
+
+        <p>The Cane's parking lot is where I spent hours huddled in a car with all of my girls powering down chicken until the depths of night and laughing so hard I was worried the Arnold Palmer would leak out. All of these girls now live in a different time zone, and I miss them endlessly.</p>
+
+        <p>The Cane's drive-through is where I held some of my most heated debates with my dear friend, who loves to argue because he's an only child. I am not an only child and would never let him win&mdash;even if he was right. He now lives multiple states away, and we haven't talked in months.</p>
+
+        <p>The Cane's dining room in all its glory with multiple disco balls, Elvis Presley paintings and a picture of Cane I with glasses on, is where I sat, yelling over the music and shouts of fresh chicken, with all of the people who helped shape me throughout the four years I spent at college.</p>
+
+        <p>It's where I would stop on my seven-hour drive back to school, right as I hit the LA basin, to get my three-finger combo and chug my Arnold Palmer in peace, readying myself for another semester and mourning the distance I had just put between myself and my parents.</p>
+
+        <p>Cane's was a large part of my college experience, something I haven't been in for a while now. But, as I sit in a Cane's, miles and miles away from the one that started it all, the blaring music, disco balls, portrait of Cane I, and the glaring Elvis painting all take me back. All of the memories surround me, and suddenly I'm not with strangers but with my dearest friends in a faraway town I have a hard time admitting I miss.</p>
+
+        <p>I eat my chicken and leave, excited to come back and forget&mdash;even just for a moment&mdash;where I truly am.</p>
+      </div>
+    </div>
+
+    <footer>
+      <span>Jenna&rsquo;s Portfolio, since 2026</span>
+      <span>made with care</span>
+    </footer>
+  </div>
+
+  <div class="right" id="view-citylights">
+    <div class="poem-wrap">
+      <button class="back" type="button">&larr; back to all posts</button>
+
+      <div class="poem-body" style="white-space: normal; max-width: 680px;">
+        <p>My first journey to City Lights Bookstore was as a child. Nestled between Little Italy and Chinatown in a city I grew up next to, the store was, to me, just another bookstore. I remember walking through the shelves, trailing my brother, excited for when we could leave. I have always been a reader, mind you, but at that point in my life all the books I wanted to read were at home in a large bin and their contents only contained stories of fairies. I remember thinking the store was cool, with different rooms and stairs and arches leading you into a small maze. I was impressed with the number of books but I thought nothing of it besides that.</p>
+
+        <p>I continued to grow up alongside this bookstore and passed by it often. Whenever people talked about visiting San Francisco, they would always mention City Lights, and I suppose I just never wondered why. I thought it was like Portland's celebrity Powell's Bookstore, famous for being large.</p>
+
+        <p>I grew up, grew out of my fairy books, and went to college. It was then, during my undergraduate years, I took a class titled &ldquo;Poetry Movements.&rdquo; This is when, many years later, hundreds of miles away, I finally learned who Allen Ginsberg was. Allen Ginsberg's &ldquo;Howl&rdquo; or Jack Kerouac's &ldquo;On the Road&rdquo; are the two most famous works that one might know from the Beats. I doubt a random person you might pass on the street would be able to give you the names of Neal Cassady, William S. Burroughs, or Lawrence Ferlinghetti, let alone know of their importance. To be completely fair, however, I couldn't have either.</p>
+
+        <p>And although Ginsberg and Kerouac may be the names in lights when the Beats are being discussed, Ferlinghetti is the one who erected the bookstore I scuffed my feet in as a child, unaware of the importance of the very bookstore I stood in.</p>
+
+        <p>Ferlinghetti opened City Lights in 1953 with Peter Martin in an attempt to assist their City Lights magazine. Promptly in 1955 they opened City Lights Publishers. Just one year after their publishing house was opened, the now-revered &ldquo;Howl and Other Poems&rdquo; by Allen Ginsberg was published. The book was promptly banned for its promiscuous contents, and Ferlinghetti was arrested.</p>
+
+        <p>Ginsberg's alleged last reading was not at City Lights Bookstore but across San Francisco's small length at The Booksmith in 1996. I feel a great sadness about this fact, that Ginsberg's last reading did not echo across the room of a bookstore that published his works and put them on its shelves, but I suppose that even if his last public display was not in City Lights, the importance of the bookstore to Ginsberg and all of the Beats still could not be taken away or diminished.</p>
+      </div>
+    </div>
+
+    <footer>
+      <span>Jenna&rsquo;s Portfolio, since 2026</span>
+      <span>made with care</span>
+    </footer>
+  </div>
+
+  <div class="right" id="view-handmaid">
+    <div class="poem-wrap">
+      <button class="back" type="button">&larr; back to all posts</button>
+
+      <div class="poem-meta">
+        <h1 class="poem-title">What We Allow to be Feminist: A Look at Privilege and Internalized Oppression in <em>The Handmaid&rsquo;s Tale</em></h1>
+        <p class="poem-date essay-byline">Jenna Overmeer<br>University of Redlands</p>
+      </div>
+
+      <div class="poem-body essay" style="white-space: normal; max-width: 680px;">
+        <p><em>The Handmaid’s Tale</em> is either praised as a relatable feminist work due to its depiction of women in a totalitarian patriarchal society or it is selectively read and critiqued because of the narrator Offred and her antihero and complacent tendencies despite being the protagonist for such an aforementioned feminist narrative. The praise usually comes from what online critics and blogs call the book’s terrifying prophecy for the United States; female reviewers feel connected to or seen by the book, saying reading it “makes you appreciate everything that you have” (<em>I’d So Rather Be Reading)</em> while other commentators who tuned into the production of the show in 2017 praise the “series as a suggestive allegory” (<em>Stephen Jones: A Blog</em>). When the lens is focused on the characters of the story, Offred is often separated from the rest of the women in Gilead as she is usually solely critiqued or accused “of being chiefly guilty of ‘the complicity of ignoring’” (Stillman and Johnson 77). Oppositely some readers name Offred as a strong feminist simply for her existence in the patriarchal society. She is quoted for her “strength and resilience” and “determined spirit” (<em>Kicks 99</em>) and in <em>“Selves, Survival, and Resistance in The Handmaid’s Tale”</em> Hansot goes even further, saying that Offred “does much more” (56) than other Handmaids who only make small “deviations in posture and glance” (56) from the regime, and believes that she is one of the few who attempts to keep hold of her identity throughout the dystopian tale. These polarized and willful misreadings prompted author Margaret Atwood to return to the book she had finished writing in 1985, thirty-two years previously, to add a special author’s note where she speaks on the way her novel is interpreted. She points out that if we decide to look at the women in her novel through the lens of an “ideological tract in which all women are angels and/or victimized” (Atwood XVI) they become incapable of moral choice. This only works to undermine the incredibly crafted female characters and rob them of their human complexities with all the variety of character and behavior. “What happens to them is crucial to the theme, structure, and plot of the book” (Atwood XVI) but if they can do no wrong in the name of feminism, then the true beauty of the story’s most psychologically interesting themes, and the ability to fully comprehend the women’s unique interactions with the oppressive genius of Gilead society, is lost. To peel back the layers of the story, many characters, not just Offred, must be understood, and the extreme sides of the argument in or against Offred’s favor must recognize that the truth they argue for, does not end with proving the inherent falsity of another view. We should allow women to be misled by the patriarchy, and instead of criminalizing their lack of strong will or celebrating their womanness in existence, work to figure out what powers have fashioned them into a colonized subject and thus better learn how to move away from this repetition of history and oppression. This nod towards our history is another often overlooked piece of comprehension, for along with commenting on the way feminism is understood from her story, Atwood nudges the readers to try and sit with the true inspiration for her novel– one that many choose to interpret differently. We will first work to redirect the skewed perspective of the novel's incentive to gain a stronger understanding of the story's reality. Then, we will turn to look into the way that Offred is stripped of her intricately crafted character to become a model for one type of unrealistic feminism, or negatively pitted against an entire society of other women simply for existing. We will work to see how the women function in an oppressed micro-society and critique the different expectations unrealistically set by the 21st-century public for each of them. I hope this will ultimately help readers recognize why the divide between feminists over the supposed character ideals from the novel, does a disservice to what the story really stands for, and instead learn to tackle this tale with an open mind, an interdisciplinary lens, and a readiness to ask questions that may not have just one answer.</p>
+
+        <h2>The Existence of Privilege While Oppressed</h2>
+
+        <p>We will start by recognizing the roots of the story. Atwood makes it very clear that despite the world’s political climate making it feel like one, <em>The Handmaid’s Tale</em> is not a prophecy. She admits that the question of whether the story is a prediction or not “is the third question I’m asked — increasingly, as forces within American society seize power and enact decrees that embody what they were saying they wanted to do, even back in 1984, when I was writing the novel. No, it isn’t a prediction, because predicting the future isn’t really possible” (Atwood XVIII). The relatability of the tale is not a modern adaptation. As I hope the world is aware, the issues in the novel like the totalitarian patriarchy, cases of internalized oppression, physical and mental abuse, and sexual assault, are not modern— they are immortal occurrences that we can trace back as far as we can handle going. Atwood continues to push this realization as she has repeatedly stated in many interviews that she did “not include anything that human beings had not already done in some other place or time, or for which the technology did not already exist,” (Atwood, “Margaret Atwood on What “the Handmaid’s Tale” Means in the Age of Trump”). Instances of personal historical inspiration that have been mentioned due to Atwood’s work outside the walls of Canada include her study of the “three great secular dictatorships of the 20th century; modern theocratic regimes such as Iran and Afghanistan” (Stephen Jones) as they are both Islamic religious states. Gilead, also a religious state, is crafted to mirror the biblical story of Jacob, his two Wives, and two Handmaids. This inspiration could also be blatantly seen to come from the Puritan roots of the United States, especially since the novel takes place in one of the first American colonies, and since Atwood has spoken out about the influence of her neighbor to the north. Other specific events in the story like “the group-activated hangings… the forced childbearing and the appropriation of the results, the children stolen by regimes… the forbidding of literacy, the denial of property rights” all came from within “the ‘Christian’ tradition, itself,” (Atwood, “Margaret Atwood on What “the Handmaid’s Tale” Means in the Age of Trump”). However, despite this clear inspiration for the society of Gilead Atwood makes sure to explicitly state that the point is not to create an anti-religion narrative, but to stand against “the use of religion as a front for tyranny” (Atwood XVII). I’m sure she would be happy to hear Reynolds call the story a “cautionary tale about the dangers of religious extremism” (1) as atheist readers could take this firm entanglement with religion as a green light to blame the women’s treatment of each other solely on the extreme religious beliefs rather than adding the complication of faith to their interdisciplinary understanding and conceptualization of what it would be like to be a woman in Gilead.</p>
+
+        <p>Other historical instances that critics have attempted to point to include the Holocaust, World War II, the treatment of female African American slaves in the history of the U.S., and specifically, the war in Czechoslovakia<sup>1</sup>. The possible argument against this is that Atwood would’ve been too young to remember these events distinctly, but researchers who focus on Atwood’s biography assure the public that “her sense of political injustice intensified as she matured” (Jadwin 22), and that these events still took up a large space in the society that raised her. As previously mentioned, these historic events are often overlooked when referencing the novel, as public discourse surrounding the text most commonly chooses to praise it as a U.S. prophecy. I believe this is due to modern readers choosing to look at the American setting of the novel as a sign to relate the story to all American women. Although this would not be an incorrect reading, to only view the novel’s setting in a broad example and ignore the heavy references to the absolute forced control and oppression of African American women that took place in the very same state as Gilead, would be doing the novel’s nod to our history a great disservice. Since the public knowledge of these abuses are unfortunately mainly passed down through generational trauma, not in public education, most white American women do not have a personal comprehension of the level of extreme abuse and silencing mirrored in <em>The Handmaid’s Tale</em> and thus do not commonly recognize it as real imagery taken from history or from a society they do not know of as a white American. Without personal connection or an international understanding, they are only able to fear the story as a possibility, not as a retelling. Dodson commends the tale for the recognition of the white Handmaids’ privilege alongside their oppression, saying Offred “spends pages emphasizing her privileged trip to the gynecologist during captivity” (75) as she speaks of the repetitive medical treatment to ensure her physical well-being. Dodson says this sparks the understanding of the lack of these same basic rights allowed to black slave women, to name just one, and signals “her recognition of the double enslavement that women of color have endured for centuries” (Dodson 72)<sup>2</sup>.</p>
+
+        <p>If we move outside of North America the legalization of rape and abuse can be found in 49 other countries today as they legally permit domestic abuse with an additional 112 failing to criminalize marital rape.<sup>3</sup> This is not to discredit the very real cases of abuse, rape, and assault that happen every day in the U.S., with one in five women<sup>4</sup> experiencing attempts or successful cases of rape, and with only 25% being reported to the police as of 2018. Movements like the “Me Too Movement” which began in 2006 and gained Hollywood-level traction in 2017, with the investigation into Harvey Weinstein, the same year as the release of <em>The Handmaid’s Tale</em> series on Hulu, furthered the attempt to give a voice to the masses of women silenced in these crimes. I bring this to attention to point out that although American society does have many men in seats of power who push constant attacks on women and their autonomy, reproductive and abortion rights<sup>5</sup>, we must also have the recognition that we live in a society that does have laws against these situations and that criminalization of the perpetrator is possible, while in many other countries, it is not, and women are often unable to even attempt to gain a collective voice. <em>The Handmaid’s Tale</em> doesn’t have an incredibly strong connection to modern-day American society when compared with other countries or historical events, for although the idea of prophecy is completely valid, we must remember to look outside our socialized Americentric mindsets to gain a true understanding of what feminism and oppression can mean.</p>
+
+        <p>The importance of recognizing these realities and privileges is not to spark or even entertain the question of “who has it worse,” in our society or <em>The Handmaid’s Tale,</em> for ranking women’s experiences does nothing but aid in a culture of silencing and shame often perpetrated– just as in the novel– by other women. One of the reasons why the story has connected with so many readers is because varying levels of oppression is relatable to ALL women, even if they choose to not recognize it within themselves; it is this very recognition of ALL women that I push for. This relatability should not be used to place all women into one shared experience, Atwood never argues that “all women’s oppression is the same” (Dodson 75), and neither do I. The existence of privilege and oppression do not denote the realness of the other, it just calls for the understanding that they coexist and manifest in each person and society differently and it is our job to educate ourselves about these differing systemic and ideological oppressions to be able to change them. <em>The Handmaid’s Tale</em> is “way too much like way too much history” (Atwood XVI) and that is what opens it up to be so educational, for as Atwood unfortunately points out</p>
+
+        <blockquote>Women will gang up on other women. Yes, they will accuse others to keep themselves off the hook: We see that very publicly in the age of social media, which enables group swarmings. Yes, they will gladly take positions of power over other women, even — and, possibly, especially — in systems in which women as a whole have scant power: All power is relative, and in tough times any amount is seen as better than none (Atwood XVI)</blockquote>
+
+        <p>The female characters and their micro-society mirror this fact and the very real levels of privilege, oppression, religious belief, manipulation, and character temperament that come together in a meta-permeation of varying levels of internalization. It is our job as readers to learn from this as we work to understand what parts of ourselves and societies are mirrored back at us from the pages. We must untangle the idea of blame and take a step back to critique how we have decided to interpret and establish what feminism is “supposed” to look like, and who gets the label of it.</p>
+
+        <h2>Held to Different Expectations</h2>
+
+        <p>Offred is often the main focus of the story as narrator, but to better understand her character it’s beneficial to compare her temperament and manifestations of Gilead’s teachings against the women who surround her (who she is often unrightfully pitted against). In <em>“Identity, Complicity, and Resistance in The Handmaid's Tale”</em> Stillman and Johnson call Offred “a reversal of the traditional generation gap” (78) as she acts in stark contrast to the strong women who lived beside her before the new regime, mainly, her feminist mother who is never called by name, and Offred’s lesbian activist best friend, Moira. When Offred tells stories of her past, in what we can assume is an attempt to remember these two women, she indicates that she has always been non-confrontational and complacent with her spot in society, as she never joined either woman in any form of patriarchal resistance, or took any interest in their work. Because of this predisposition, to be frustrated that “no amount of verbal construction, deconstruction, and reconstruction seems to help Offred understand, communicate, or resist” (75 Stillman and Johnson), is futile, as Gilead’s religious reconstruction’s entire purpose is not to inspire her to be rebellious, but to lean even more into her previously unconcerned mindset. For Offred to make the choice to live in the toxic waste and war zone of the colonies, which can be seen as a rejection of the regime, Offred’s mother continuing her fight against the patriarchy, she would have had to be a very different character previous to the new society. To want Offred to rebel like her mother, even after her time in the Red Center, is unrealistic.</p>
+
+        <p>The other most commonly compared pair is Offred and Moira, as the feminist is often used to point out what Offred could be doing as an “ideal feminist.” Moira is also often placed on the same pillar as Offred’s mother, as her choosing to work in Jezebel’s brothel is similarly viewed alongside the colonies as an escape and rejection of Gilead. However, I argue that Offred has little character change pre and post regime, and Moira— previously an aggressive activist— has a large one that is often overlooked. Offred describes Moira as a fantasy; even in the Red Center Moira was the only one to escape, stabbing an Aunt in the bathroom and making it to the border. This action is often seen as her greatest rebellion against Gilead. What is rarely mentioned, is the detail that Offred attempted a similar thing, trying to escape with her lover and daughter as Gilead was first taking control. This is a note that Weiss forgets as he says “If Moira can overcome one of the Aunts and try to escape (140-43), presumably Offred can, too; Moira’s main role in the novel may well be exposing Offred’s cowardice through the difference between how they behave” (137). Despite the small-minded interpretation of the previous assumption, Lyn’s description of Offred continuing to be “desperate to get her daughter back and escape the Republic of Gilead” (<em>The Cozy Book Blog</em>) is also not true. Offred does attempt to flee the regime, but she does not attempt to escape after the regime is put in place, nor does she make any moves to try and find her lost daughter, outside of thinking of her. Her one previous true attempt of escape is clearly forgotten as she recounts that in the Red Center, she and the rest of the girls were already “losing the taste for freedom, already we were finding these walls secure.... Nevertheless, Moira was our fantasy.... she was lava beneath the crust of daily life” (Atwood 133). At this time, Moira became somewhat of a beacon of useless hope for the girls. But looking back, Stillman and Johnson are not the only ones to claim that “for our present, Atwood offers Offred’s mother and Moira as examples of how to feel, think, and act, and Offred and the academics of how not to” (82-83). This is an argument that I believe could be reasonably made about all three of these women before Gilead, but is not a statement that holds up through the regime. Although it can be seen from one point of view that “Offred has betrayed both her mother and her best friend through her complicity,” (Stillman and Johnson 81) this statement ignores the fact that Moira too finds peace in her societal position, she just does not receive even half as much criticism as Offred. A double standard being held for each other women based purely off of their pre-Gilead dispositions.</p>
+
+        <p>When Offred finds her best friend working at Jezebel’s, a brothel where high-ranking commanders of Gilead and ambassadors from other countries partake in the sexual services forced to be offered, she is shocked when she speaks to Moira in the bathroom and sees a large change in her character. She says “She’s frightening me now, because what I hear in her voice is indifference, a lack of volition” (Atwood 249); the feminist woman who stabbed an Aunt and escaped the Red Center is now comfortable in her place that she sees as the best of the worst options. She is not forced to cover herself, but instead forced to show it off, in what the Aunts would call the “the freedom to,” while the Handmaids are, in their minds, elevated to the society where they get “the freedom from.” Moira allows herself to be sexualized in exchange for the only type of peace in Gilead, and the ability to continue to be with women. This is not a negative attribution, despite sex workers varying levels of acceptance, it is just a fact: Moira has given up her attempts of escape for what Offred’s commander calls preference. He says “‘They prefer it here too,’ ‘prefer it to what?’ I say ‘to the alternatives,’ he says,” (Atwood 238) the alternatives being becoming an “unwoman” in the colonies like Offred’s mother, or facing death. In <em>“Margaret Atwood’s The Handmaid’s Tale (1985): Cultural and Historical Context”</em> Jadwin says that from this interaction with Moira, Offred learns that “mutilation and forced prostitution are Gilead’s standard punishment for female disobedience,” (31). Although I would greatly argue that Offred was already quite aware of the mutilation, it was a rare chance for her to see sex work outside of the culture of the Handmaids. The expert crafting of Gilead makes it so repression and internalization are the only options outside of death, maintaining “a culture of silence and obedience” (Reynolds 3). Fear is the feeding ground of internalization and thus compliance from complete immobilization. Even strong feminists like Moira, quiet down once they are given no other choice; the silence is brought on by fear of the “alternatives.”</p>
+
+        <p>Another woman often compared to Offred’s complacent tendencies is her fellow Handmaid and shopping partner Ofglen. Because of the grip of the regime on women’s ability to create any type of allyship, once Offred finds out that her partner is not a true believer and is instead a member of Mayday, the only supposed resistance against Gilead, we see a rare display of happiness, “I want to laugh, shout, hug her,” (Atwood 168) as she finally knows she can be free to be whatever small part of herself there is left with this women, previously, her job being “assigned the responsibility to monitor” (Jadwin 57) each other during their walks. This knowledge makes Offred feel safe with her partner, a luxury she has never been able to feel before in Gilead. However, what she is most often criticized for is that she does nothing with this new information besides enjoying it. Her knowledge of Ofglen’s character does not change her own actions. During Gilead-sponsored activities like the “Prayervaganza, the Salvagings (where female delinquents are hung), and the Particicution (where male sex criminals are torn limb from limb by the Handmaids) Offred participates as the government would wish,” (76 Stillman and Johnson) but what is left out of this recognition is that so do all the rest of the Handmaids, including Ofglen. They are required to. The only difference between Offred and Ofglen’s participation is that at the Particicution it is Ofglen who is the first to attack, kicking the persecuted so he loses consciousness, and does not have to be mentally present for the ending of his life. Whether this was an act of participation or salvation is a detail that does not need to be correctly answered, it just needs to be pointed out that Offred and Ofglen both participate, and both of their roads end in death, they just travel with different mindsets. Offred does not believe she can change anything, because that is what she has repeatedly been shown to be true by the regime, thus she does not even bother trying.</p>
+
+        <p>Offred showcases this continued belief of futility when Ofglen begins asking her for information on her Commander once the two start spending more time together. Offred, the power of Gilead working on her in full force says “I can’t… I’m too afraid… anyway I’d be no good at that, I’d get caught” (Atwood 283), once again demonstrating that she does not believe in her ability to fight back, as she was successfully taught that she had no power outside of her reproductive organs, and she believes it. This internalization causes her to continue her life of compliance and happily notes that “Ofglen is giving up on me. She whispers less, talks more about the weather. I do not feel regret about this. I feel relief” (Atwood 271). Although I do believe this is a correct moment of frustration for those who wish her to be a more aggressive activist, I believe this moment can also be viewed in a different light. Offred is showing her relief of not having an outside figure urging her to grapple with the idea of what is right and wrong outside of herself. Grappling with the ideologies of Gilead and fighting the lessons of internalization we know is exhausting. Standing up to the patriarchy is not a simple or linear journey and it all comes down to the women’s lack of choices underneath the gauntlet of oppression. We must understand that the women of the novel have few choices, none of which choices a human being should have to make. But in our history and this novel alike, they do. An example of these choices comes from Ofglen’s participation in Mayday, resulting in the Angel’s van coming to pick her up, a sign most take to mean death after torture. Ofglen makes the choice to commit suicide, saving her from torture, and keeping the people connected to her safe, including Offred. Through this horrible forced choice, Ofglen displays an ability to reject the teachings of Gilead.</p>
+
+        <p>On the other side of the spectrum when Offred learns of Ofglen’s passing, we see the important difference in their mindsets. At first, Offred recognizes that “she has died that I may live” (Atwood 286), a sacrifice that Offred already knows she would not make as she says “What I feel is relief. It wasn’t me,” (Atwood 170). This would correctly be seen as a moment of Offred acting outside the world of feminism and showcasing her terrified and selfish state of being, however, what is important to note outside of this is that she is clearly self-aware of this hold terror has over her and that she lives in a society that forces women to choose other’s death to save themselves. Offred displaying this as she admits that “I’ll say anything they like, I’ll incriminate anyone,” (XV 285). Offred often beats critics to condemn her own actions.</p>
+
+        <p>What makes this situation of Ofglen’s death paradoxical is that despite knowing Offred herself would not lay down her life for the women she is oppressed alongside, suicide is one of the most romanticized ways of resistance she thinks about. In <em>“Offred’s Complicity and the Dystopian Tradition in Margaret Atwood’s The Handmaid’s Tale”</em> Weiss correctly brings up the fact that “she does think of ways to rebel, but even in her most potentially destructive plans, her ultimate solution is escape, via suicide” (136) but never is able to go through with it due to the fact that she does not seem to be completely unhappy with her life in Gilead and it’s “protective embrace” (Weiss 133). Even in her last moments when she sees the car pull up to take her from her position, still unsure whether or not it’s the Eye or Mayday, she, unlike Ofglen, submits and leaves willingly. However, despite showcasing these deeply internalized teachings causing her lack of ability to do anything, Offred does find and display small ways to act out against the regime, past her one fearful attempt to flee with her family.</p>
+
+        <p>The common judgment against Offred is that she “is guilty of complacency, complicity, and selfish concern for her own private needs and desires” (Weiss 138) or what Stillman and Johnson add on as “self-absorbed, focused on her own happiness or survival, and unconcerned with women as a group, with society at large, and even with the quality of her own life” (81). All of these understandings can be seen as true, but an equally true understanding is that Offred still steps outside of the regime’s regulations in her own way. Jadwin describes Offred as resisting “Gilead’s propagandistic vocabulary by using blunt, deliberately euphemistic language (35)” in the retelling of her story, as she does a sort of bragging, saying things with as many extra words as she can, just because she can, a show that she is doing one of the main things she is not allowed to do: be educated. She continues to sneak out to see her Commander, which can be argued as compliance as she is listening to his request, but their meeting does not negate the fact that she is still stepping outside the laws of the regime itself and that their meeting allows to her educate herself. Throughout the novel, she speaks her own name in remembrance of her past self and works to whisper the names of other women so they do not feel forgotten. Despite the massive critiques of her “preference for ‘ignoring’” (Weiss 135) and pointing to the fact that while these mentioned acts “may be subversive, it does not involve or lead to any real challenge to the State” (Weiss 135) these should not be solely used as ammunition to argue a lack of feminist tendencies. If we look at these ideas from a wider perspective, we should be able to recognize that Offred uses this ignoring as a survival method. She lets the regime’s brainwashing work to the point of numbness and often allows the teachings of her incompetence to get to her completely. However, despite the hours of re-education in the Red Center, she battles the teachings to keep her from being a true believer, something that should not be taken lightly. In fact, Offred seems to know that she is rejecting the teachings of Gilead in her own way, saying “I would like to be ignorant. Then I would not know how ignorant I was” (Atwood 263). Through these moments we can clearly see that she still displays recognition of her situation and still has a memory of how things used to be, which is ultimately what brings her more pain, for there is more to miss and recognize as oppression.</p>
+
+        <p>This recognition alone is an incredible feat, and already should be seen as resistance, even if the resistance only takes place within her mind; Tomc puts a name to it as she is called “a heroine whose sole resistance goes on inside her head” (Weiss 121). Offred herself telling us that she knows “ignoring isn’t the same as ignorance, you have to work at it” (Atwood 56). This ignorance and internalization is what Reynolds open-mindedly defends as women’s “coping mechanisms to survive, ranging from internal rebellion and secret alliances to complete psychological dissociation” (4), all three things we can easily find in the text. In a society so powerful, made purely to convince women to accept whatever is offered, this recognition is incredible. Stillman and Johnson’s point that Offred has failed “to maintain her identity” (75) is true, but through these understandings, I hope we can recognize why. On top of the mental fight, there is an often glossed-over note of physical abuse or mutilation. Offred admits in the Red Center “I know I lost time. There must have been needles, pills, something like that. I couldn’t have lost that much time without help. You have had a shock, they say… I can remember screaming,” (Atwood 39) a note that is not mentioned again outside of this single admittance. The same people who turn on Offred for not fitting into what they think a modern-day feminist should be should remember that she does not act just from mental manipulation, but physical torture as well. In a utopian world, we would all like the women of the story to rise up, bond together, and reject the totalitarian regime. But, as we can see in our history, rejection of oppression only by the oppressed is an incredible task, especially when a variety of abuse and many forms of control are in place.</p>
+
+        <p>With this understanding in mind, small victories of rejection can be found outside of Offred’s head. Physical rejections of the laws, although small, include using butter to lotion her hands, despite the idea of smooth skin being held only for the Wives, and continuing a sexual relationship with Nick the gardener outside of Serena Joy’s command. Stillman and Johnson argue that this directly places her into the “system of sex, power, and corruption that characterizes the actual workings of Gilead and powerfully construct her as a being who defines herself by her body… involves Offred defining herself as body, which is precisely the identity Gilead requires” (75-76) but this power, despite being one of the reasons women are oppressed in the first place, is still a power she knows how to use and I agree with Weiss that since the “regime forbids <em>The Handmaid’s Tale</em> love affairs, then one of the rebellious things that you can do is have one” (qtd. in Weiss 122-123). Her sexuality is the only power that was not taken away from her and the only one that as a Handmaid she can wield. The only point of this situation we can scrutinize is– not the act of exercising her sexuality– but the way she allows this new love affair with Nick to act as a catalyst for the declaration of complacency as she admits that “the fact is that I no longer want to leave, escape, cross the border to freedom,” (Atwood 271) thus showing a level of happiness in her life that many in a perfect feminist world would hope to not be there as she gives up her last bit of rejection for a man. However, this is not a scrutiny that should be reserved only for Offred for if this double standard and judgment of sexuality was expanded to the rest of the women in the story, then praised feminist Moira should also be brought down to a similar level, something that is seldom done.</p>
+
+        <h2>Women Teach Women</h2>
+
+        <p>Offred’s mental rejection is of the regime’s use of “selective interpretation of biblical texts” (1) to do what Reynolds perfectly describes as justifying and enforcing “rigid gender roles, stripping women of their identities and autonomy” (1) in “<em>Discussion on the Relationship Between Religion and Gender Oppression in The Handmaid’s Tale”</em> is what perpetuates the cycle of oppressed women as they are forced to believe in the extreme faith and its grounds for allowing men to exercise complete command of the women who are required to practice. However, it is important to keep Atwood’s note in mind and to look at the extremity of the regime’s religion and teachings as a tool for internalization, not the sole perpetrator. What’s interesting is that I believe if women were taught of the regime’s ideological place for them in society directly by men, the percentage of women who would believe would be less. However, since women are the ones who teach each other of their spot in society, the belief is much harder to ignore. It comes from those beside them, not necessarily above them. This is structurally a genius ploy and one of the most successful attributes of society. Women are taught by other women, not men, about their paradoxical existence in which they are both the least and most important people in society.</p>
+
+        <p>It is the Aunts who yield the most religious and political influence as they “have been given a semblance of power and authority in exchange for their loyalty to the regime” (Reynolds 5) and are arguably the most crucial instruments in furthering the cycle of teaching women to inadvertently suppress each other. If enough Handmaids do not truly believe, rebel, escape, or begin taking their own lives, the entire structure of their society crumbles; it is crucial that Handmaids “think so poorly of themselves that they will accept their assigned fate” (Atwood XV). This internalization is almost completely up to the success of the Aunts’ teachings. They do so with “a combination of religious teachings, psychological manipulation, and physical punishment to break down the women’s resistance and mold them into obedient Handmaids” (Reynolds 4). The Aunts themselves believe so heavily in their religious ordination that they create a “divine rationale for the systemic oppression and exploitation” (Reynolds 2), causing them to be unquestioning to the horrible acts they commit against the Handmaids.</p>
+
+        <p>The Aunts are colonized subjects whose internalization goes far past the point of skewed judgment or microaggressions and into the extremes. The Aunts believe it when they say “We want you to be valued, girls,” (Atwood 114) yet no action is ever taken to make this statement true. When Janine was sexually assaulted, instead of feeling valued, they are taught they cannot stand with each other in solidarity. Due to brainwashing and fear of societal ostracization as they are forced to chant “her fault, her fault, her fault. Who led them on?” they are asked “She did. She did. She did. Why did God allow such a terrible thing to happen? Teach her a lesson. Teach her a lesson. Teach her a lesson” (Atwood 72). The Aunts already believe this and the Handmaids are learning it. Offred proves the success of the teachings by asking “What was it about this that made us feel we’d deserved it?” (Atwood 177). Offred’s comments of internalization like “we are containers, it’s only the inside of our bodies that are important” (Atwood 96) all come from the Aunts, so the criticism for Offred and her mindset should be extended to the women who believe twice as much as she. I believe the Aunts have such a grasp on their ordainment because it is what has become easy. Just as rejection of the teachings is what is difficult for Offred, it is oppositely so for the Aunts. If the Aunt’s belief in the religious ideologies of Gilead wavers, then they have to look at their own morals, of which they probably no longer recognize nor remember and they must deal with the physical and psychological torment they have brought. Atwood almost perfectly sums up their situation as she says that “if you define yourself as innocent… then nothing is ever your fault– it is always somebody else doing it to you. . . . you will always be the object [of victimage] rather than somebody who has any choice or takes responsibility for their life” ((Gibson 22)) (Larson 28).</p>
+
+        <p>Offred showcases this grappling with oneself after the chanting at Janine when she remembers “I used to think well of myself. I didn’t then” (Atwood 82). Offred, unlike the Aunts, has these previously mentioned conflicts with her morals and her teachings. Later when Janine falls pregnant, gives birth to a deformed infant, and falls into a state of insanity, Offred thinks “I don’t even feel sorry for her, although I should. I feel angry. I’m not proud of myself for this, or for any of it. But then, that’s the point,” (Atwood 292-293). Offred shows her understanding of how her mind has been taught to respond to other Handmaid’s successes and failings. Aunts oppositely have no moments that indicate any type of reflection on their doings, thus proving that they were unable to keep any sense of morality, giving it all up for their faith.</p>
+
+        <p>The other factions of women, just like the Aunts, act from their place in society where they are oppressed to the point of a strong internalized sexist belief and an imagined hierarchical predisposition that they believe is the reason they can look down upon other women. Wives fall into the ladder category and as Reynolds perfectly described are “often complicit in the oppression of other women, particularly the Handmaids, whom they supervise and control during the reproductive ceremonies” (3). Handmaids are taught that the Wives will rightfully resent them, that it “is only natural” and they must “try to feel for them… try to pity them. Forgive them, for they know not what they do… you must realize they are defeated women” (Atwood 46). To the Aunts the Wives are the only ones whose feelings are validated in their position, indicating that the reason as to why they have the right to abuse the Handmaid’s below them is simply because of their societal positions. The “defeated” aspect of the Wives is due to their inability to birth children, a judgment that is mirrored in our very own society as in a patriarchy a woman’s worth is often connected to her youth and fertility. In Gilead, this validated frustration the Wives hold against their situation in life is not directed towards their husbands or the regime, instead, Wives too are taught to blame their discomfort with their lives on the Handmaids. They take on the Puritan view of seeing Handmaids as “little whores” (Atwood 115) as the Handmaids are required to take this in silence, the Wives’ opinion continuing to beat the internalization of the lack of self-worth into the Handmaids long after they leave the Red Center.</p>
+
+        <p>Wives do not see their actions as injustice, they see it as what they deserve. But to once again work to understand why the characters might act as they do, it’s crucial to point out that Wives and Aunts also have their sexual rights stripped away, just in a different way than the Handmaids. A perfect example of this is the idea of “The Ceremony” when the Wife and the Handmaid are laid together in an effort to make them act as one. This is a time that is often quoted as a moment of horrific abuse of control and rape, despite Offred saying it “is nothing I haven’t signed up for” (Atwood 94) which is very debatable as her role in becoming a Handmaid was not a choice. But, it should be pointed out that Serena Joy did not choose to participate in the abhorrent ritual of The Ceremony as little as Offred did. She is forced to be a bystander of the debatably non-consensual sex that takes place between her legs, watching her husband, who we are never sure if she loves or not, with another woman. It is a fact that her role in making the situation even worse for Offred by holding her hands tightly and letting her rings cut the Handmaid is horrible, Offred saying it “may or may not be revenge” (Atwood 94) but along with recognizing this, we must also see what this can symbolize to Serena Joy, as it is a time to remind her not only of her infertility but also of her inability to partake in any sexual endeavors.</p>
+
+        <p>In the beginning, Offred openly speaks of her mutual dislike of her Commander’s Wife, Serena Joy, saying she often amused herself “with small mean-minded bitter jokes about her,” (Atwood 153) something many critics will join in on as just as with the Aunts it is an easy take to recognize the lack of any type of feminist qualities in the Wives. But, to the dismay of many readers, Offred’s mindset changes, and she is able to find a “small compunction towards her” (Atwood 162), even posing the question of “Which of us is it worse for, her or me?” (Atwood 95). In this case, this “small compunction” or recognition that “it must be hard” (Atwood 66) for Serena Joy to be noticed or cared about in her position, can also be read as Offred’s comprehension of no good situation for any woman in Gilead; she says,</p>
+
+        <blockquote>Once I’d merely hated her for her part in what was being done to me; and because she hated me too and resented my presence, and because she would be the one to raise my child… but now, although I still hated her, no more so than when she was gripping my hands so hard that her rings bit my flesh, pulling my hands back as well, which she must have done on purpose to make me as uncomfortable as she could, the hatred was no longer pure and simple. Partly I was jealous of her; but how could I be jealous of a woman so obviously dried-up and unhappy? You can only be jealous of someone who has something you think you ought to have yourself. Nevertheless I was jealous. But I also felt guilty about her. I felt I was an intruder, in a territory that ought to have been hers… I was taking something away from her” (Atwood 161)</blockquote>
+
+        <p>Offred realizes her forced role in the unhappiness and deprivation of Serena Joy’s life, while also noticing her own want for the things she is barred from having, all issues brought on by totalitarian control over them. Both women are forced to play a role in each other’s unhappiness and unfulfilled life they both wish they didn’t have to lead. Although some of Offred’s inner monologue showcases her internalization of what she believes she deserves, like the idea of territory that is “supposed” to be Serena Joys, she is also responsive to the other women she lives alongside, proving that she still has a grasp on basic rights that each woman deserves and continuing her small mental rejections of Gilead. We should be like Offred and recognize that they are all victims of the same patriarchy and that the religious ideology internalizes and manifests in different forms for each of them. In the name of feminism, we must learn from this story that there is a reason for compliance, and there can be privilege within oppression.</p>
+
+        <h2>A Continuous Conversation</h2>
+
+        <p>The women that the Wives loom over would ideally have a relationship in which they attempt to make each other’s lives easier and lighten the hostility that grows within a household fostered by the regime. However, because of the structure of the women’s assigned roles in life, this is not what happens. Instead, “in this house we all envy each other something” (Atwood 47). Envy is a common emotion that causes a stir between the different factions. Marthas are the ones who are tasked with the sexist trope of doing all the housework and child care, but they, just like the Wives, are infertile and thus not sought after. They hold no power like the Wives and no specialty like the Handmaids. Marthas treat Handmaids much like Econowives, the low-class women who hold the role of the traditional housewife, doing what all three factions of women are set up to do. The paradox of the Econowives is an interesting one, for although they are supposed to hold the least amount of power as they are married to low-status men, and the view of them from the higher class of Gilead society is negative, they still manage to look down upon the Handmaids. When the women in red pass Econowives in a funeral procession “the first one scowls at us. One of the others turns aside, spits on the sidewalk. The Econowives do not like us” (Atwood 44). We can assume from the judgments of Aunts, Wives, and Marthas, that the reasoning for their dislike is from ignorance or judgment of the horrors Handmaids go through. From the outside, the Econowives could see Handmaids as waited on, which would then spark a feeling of jealousy or unfairness. On the other hand, they could know what the Handmaids are required to do and instead choose to look upon their job with negativity, assuming that it was a chosen position.</p>
+
+        <p>These reasonings could be said for the Marthas as well, who often treat Handmaids as if they are “a household chore, one among many” (Atwood 48). However, like the Handmaids, Marthas do show very small rejections of the regime’s tight regulations mainly spurred on through the form of pity towards the Handmaids, this most likely coming from a recognition of the tight rules they alone must follow. The eldest Martha, Rita, spends most of the novel making her “resentments felt” (Atwood 65), like feeding Offred overcooked or bloody chicken, ignoring her, or complaining about Offred’s groceries. It isn’t until the very end that the Martha notes it’s “a shame making you wear all them pillowcases on your head, in this weather” (Atwood 208) commenting on the forced modesty of the Handmaids’ outfits and the discomfort it brings. Many would point out that Rita’s one comment in defense of Offred doesn’t make up for the actions of rejection, and that the younger Martha, Cora, does much more to make Offred feel like a human, like the simple act of knocking before she comes into Offred’s room, the Handmaid noting that “it means she thinks I have some of what we used to call privacy left,” (Atwood 65). But, I do not argue that Rita’s one comment undoes any of her previous bullying, I just point out that her sudden and kind sentence comes begrudgingly, and with no other comment about wanting Offred to do her patriarchal expectation of childbirth.</p>
+
+        <p>This does not hold up the same for Cora, rather, the reason for her much more constant kindness can be viewed as coming from a place of care for Offred simply for her reproductive abilities. When Cora speaks to Offred, it is about her wishes for children, as having a child is the only thing that seems “worthwhile to her” (Atwood 135), showcasing her internalized patriarchal view that women are just to be mothers. Because Cora reinforces this idea through micro-comments, Offred feels that she is expected to “repay the team, justify my food and keep… she hopes, and I am the vehicle of her hope” (Atwood 135). Cora sees nothing wrong with her singular hope, Offred does not have the will to fight back, Rita chooses to ignore the Handmaid in her house, while Serena Joy oppositely chooses to notice her too much.</p>
+
+        <p>We can see that not a single woman in <em>The Handmaid’s Tale</em> goes uncorrupted. Gilead society is made robustly; the women are so misused and exploited that they lose their ability to clearly see the oppression they enact on the women who are forced to stand beside them. Many of them lose the will to stand up to their reinforcements of internalization as the outcome of doing so results in such extreme punishments it’s viewed as not worth even trying. Handmaids are indeed taken advantage of in almost every way possible: their reproductive organs are abused, their humanity is disrespected, and they are taught to walk such a thin line between complete self-loathing and idolization that it drives many to death. However, the Handmaids are not the only abused group in the novel and the point of Offred’s character is not to draw such a stark line between herself and the factions, or between the feminists and the antihero, her actions, along with the rest of the women, are too complex and their minds too rearranged to be able to do this. In reality, each faction of women lacks multiple basic rights in varying extremities, just like the women of the world we live in, none of whom fit into one category of person as easily as we throw these characters in. Feminism in <em>The Handmaid’s Tale</em> is a much more complicated, historically written, and systemic issue than most critics make it out to be. Atwood works to look at feminism “from both conservative and liberal viewpoints” (Jadwin 30). On one hand, feminism can be seen in all areas of the book, even outside of the fact that for many, “giving a woman a voice and an inner life will always be considered ‘feminist’ by those who think women ought not to have these things” (qtd. in Jadwin 34). It can be seen seeping in with Offred’s Scrabble games with her Commander, instilled in Moira’s soul as she continues to stay true to her sexuality, in Ofglen as she participates in a Salvaging, hoping to save a convicted man of some torture, and in Rita as she offers Offred an ice cube to suck on when it’s hot. However, these women are the very same who showcase deep-seated moments of internalization and immobility due to fear, abuse, and dogmatic religious teachings and can equally be found to be guilty of exercising their prejudices, power, and manipulation over other women. Readers may relate more with one understanding and opinion than the other depending on their differing belief of what feminism is, but both the feminist and internalized sexist qualities of Offred, and the rest of the women in the story, will continue to be true.</p>
+
+        <p>I do not argue that there is one way to interpret the text, if I did I would be highly hypocritical; my belief is different entirely, that just like with most literature, there is no correct interpretation, just a chance to widen a small view, add to a larger interdisciplinary conversation, or as Larson urges, learn from Atwood’s reconstruction of cultural memory “by helping us remember the past” (27) so we may grow away from it. The story starts in world history and ends with many modern interpretations. It is openness to these different interpretations that is a powerful tool for our overall learning and comprehension of women in our patriarchal world “because women are interesting and important in real life. They are not an afterthought of nature, they are not secondary players in human destiny, and every society has always known that,” (Atwood, “Margaret Atwood on What “the Handmaid’s Tale” Means in the Age of Trump”). The understanding of Gilead and the psychology of the women it constrains cannot be tied down to one description of power and character. Women can be both feminists and oppressed beings who take part in the continuation of the patriarchy, and at the same time fight against it. <em>The Handmaid’s Tale</em> is an endless lesson that fits in a worldwide and historic conversation of allyship, personal ideologies, and women’s rights that must never stop. It is not a specific character, but this understanding, that makes the book feminist. “Any questions?” (Atwood 311).</p>
+
+        <h2>Notes</h2>
+        <ol class="notes">
+
+          <li>Atwood spent time in college volunteering to teach English to refugees and immigrants, in “Note to the Reader” Atwood cites making a connection with a woman who fled Czechoslovakia during war.</li>
+
+          <li>For a very comprehensive understanding of <em>The Handmaid’s Tale’s</em> connection to America’s systemic racism and Atwood’s nod to the treatment of black women in the U.S despite writing a story comprising only of white women, refer to Dodson’s <em>‘We lived in the blank white spaces’: Rewriting the Paradigm of Denial in Atwood’s The Handmaid’s Tale.</em></li>
+
+          <li>“Gender Equality” <em>The World Bank</em>, 2017.</li>
+
+          <li>National Sexual Violence Resource Center. “Statistics.” <em>National Sexual Violence Resource Center</em>, NSVRC, 2024, www.nsvrc.org/statistics.</li>
+
+          <li>The overturning of Roe v. Wade in 2022 a main event that is, rightfully, often brought up in conversation with <em>The Handmaid’s Tale.</em></li>
+
+        </ol>
+
+        <h2>Works Cited</h2>
+
+        <p class="cite">Atwood, Margaret. “For God and Gilead.” <em>The Guardian</em>, 22 Mar. 2003, www.theguardian.com/music/2003/mar/22/classicalmusicandopera.fiction.</p>
+
+        <p class="cite">Atwood Margaret. “Margaret Atwood on What “the Handmaid’s Tale” Means in the Age of Trump.” <em>The New York Times</em>, 10 Mar. 2017, www.nytimes.com/2017/03/10/books/review/margaret-atwood-handmaids-tale-age-of-trump.html.</p>
+
+        <p class="cite">Atwood, Margaret. <em>The Handmaid’s Tale</em>. McClelland &amp; Stewart, 1985.</p>
+
+        <p class="cite">Diane Lyn. “The Handmaid’s Tale, Margaret Atwood, Review, Thecozybookblog.com.” <em>The Cozy Book Blog by Diane-Lyn</em>, 31 Dec. 2021, www.thecozybookblog.com/the-handmaids-tale-margaret-atwood/.</p>
+
+        <p class="cite">Dodson, Danita J. “‘We lived in the blank white spaces’: Rewriting the Paradigm of Denial in Atwood’s The Handmaid’s Tale” <em>Penn University Press</em> 1997, Vol. 8, No. 2 (1997), pp. 66-86. Accessed 16 September 2024.</p>
+
+        <p class="cite">Hansot, Elisabeth. “Selves, Survival, and Resistance in The Handmaid’s Tale.” <em>Utopian Studies</em>, vol. 5, no. 2, 1994, pp. 56–69. <em>JSTOR</em>, http://www.jstor.org/stable/20719313. Accessed 25 September 2024.</p>
+
+        <p class="cite">Jadwin, Lisa. “Margaret Atwood’s <em>The Handmaid’s Tale</em> (1985): Cultural and Historical Context” ResearchGate, January 2009. https://www.researchgate.net/publication/237268394_Margaret_Atwood's_The_Handmaid's_Tale_1985_Cultural_and_Historical_Context. Accessed November 4, 2024.</p>
+
+        <p class="cite">Jackson, Blaine. “‘The Handmaid’s Tale’ - a Review of the Hulu Series.” <em>Kicks 99</em>, 4AD, kicks99.com/2024/09/04/the-handmaids-tale-review-of-hulu-series/.</p>
+
+        <p class="cite">Jones, Stephen. “The Handmaid’s Tale.” <em>Stephen Jones: A Blog</em>, 23 Dec. 2022, stephenjones.blog/2021/08/24/handmaids-tale/.</p>
+
+        <p class="cite">Larson, Janet L. “Margaret Atwood and the Future of Prophecy.” <em>Religion &amp; Literature</em>, vol. 21, no. 1, 1989, pp. 27–61. <em>JSTOR</em>, http://www.jstor.org/stable/40059401. Accessed 26 October 2024.</p>
+
+        <p class="cite">Natalie. “Book Review: The Handmaid’s Tale by Margaret Atwood.” <em>I’d So Rather Be Reading</em>, 2010, www.idsoratherbereading.com/2010/10/book-review-handmaids-tale-by-margaret.html.</p>
+
+        <p class="cite">Ozlem, Sensoy and DiAngelo, Robin. “Is Everyone Really Equal” <em>Teachers College Press,</em> ch 4 - 8, New York, 2017.</p>
+
+        <p class="cite">Reynolds, Laura P. “Discussion on the Relationship Between Religion and Gender Oppression in The Handmaid’s Tale” <em>Paradigm Academic Press: Studies in Social Science and &amp; Humanities,</em> vol. 3, no. 6, June 2024. https://www.paradigmpress.org/SSSH/article/view/1175. Accessed 26 September 2024.</p>
+
+        <p class="cite">Sadeghi, Zahra and Mirzapour, Narges. “Women of Gilead as colonized subjects in Margaret Atwood’s novel: A study of postcolonial and feminist aspects of The Handmaid’s Tale” <em>Cogent Arts and Humanities.</em> https://doi.org/10.1080/23311983.2020.1785177. Accessed 26 September 2024.</p>
+
+        <p class="cite">Stillman, Peter G. and Johnson, S. Anne. “Identity, Complicity, and Resistance in The Handmaid's Tale” <em>Utopian Studies</em>, 1994, Vol. 5, No. 2 (1994), pp. 70-86, Accessed 16 October 2024.</p>
+
+        <p class="cite">Weiss, Allan. “Offred’s Complicity and the Dystopian Tradition in Margaret Atwood’s The Handmaid’s Tale” <em>Studies in Canadian Literature / Études en littérature canadienne</em>, vol. 34, no. 1, 2009, p. 120–141, Accessed 26 September 2024.</p>
+
+        <p class="cite">Zarrinjooee, Bahman, and Shirin Kalantarian. “Women’s Oppressed and Disfigured Life in Margaret Atwood’s The Handmaid’s Tale.” <em>Advances in Language and Literary Studies</em>, vol. 8, no. 1, 2017, pp. 66-71<em>. ProQuest</em>, https://ezproxy.redlands.edu/login?url=https://www.proquest.com/scholarly-journals/women-s-oppressed-disfigured-life-margaret-atwood/docview/2188086144/se-2, doi:https://doi.org/10.7575/aiac.alls.v.8n.1p.66. Accessed 25 September 2024.</p>
+      </div>
+    </div>
+
+    <footer>
+      <span>Jenna&rsquo;s Portfolio, since 2026</span>
+      <span>made with care</span>
+    </footer>
+  </div>
+
+</div>
+
+<script>
+  var VIEWS = ['poem', 'canes', 'citylights', 'handmaid'];
+
+  function showView(name) {
+    var isPost = VIEWS.indexOf(name) !== -1;
+    document.getElementById('view-list').classList.toggle('active', !isPost);
+    VIEWS.forEach(function (v) {
+      document.getElementById('view-' + v).classList.toggle('active', v === name);
+    });
+    window.scrollTo(0, 0);
+    try { history.replaceState(null, '', isPost ? '#' + name : location.pathname + location.search); } catch (err) {}
+  }
+
+  function currentHash() {
+    try { return (location.hash || '').replace('#', ''); } catch (e) { return ''; }
+  }
+
+  // Titles open their piece; "back" returns to the list.
+  document.querySelectorAll('.post[data-view]').forEach(function (el) {
+    el.addEventListener('click', function () { showView(el.getAttribute('data-view')); });
+    el.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showView(el.getAttribute('data-view')); }
+    });
+  });
+  document.querySelectorAll('.back').forEach(function (el) {
+    el.addEventListener('click', function () { showView('list'); });
+  });
+
+  showView(currentHash());
+</script>
+</body>
+</html>
